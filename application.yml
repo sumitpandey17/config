@@ -1,0 +1,47 @@
+zuul:
+  #Service will be mapped under the /api URI
+  prefix: /api
+  routes:
+    hello-server:
+      path: /server
+      url: HELLO-SERVER/rest/hello/server
+    hello-client:
+      path: /client/**
+      serviceId: HELLO-CLIENT
+    authorization-server-1:
+      sensitiveHeaders: Authorization
+      path: /authorization-server-1/**
+      stripPrefix: false
+
+security:
+  basic:
+    enabled: false
+  oauth2:
+    sso:
+      loginPath: /login
+    client:
+      accessTokenUri: http://localhost:8769/authorization-server-1/oauth/token
+      userAuthorizationUri: /authorization-server-1/oauth/authorize
+      clientId: fooClient
+      clientSecret: fooSecret
+    resource:
+      jwt:
+        keyValue: "abc"
+      id: fooScope
+      serviceId: ${PREFIX:}resource
+
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    server:
+      waitTimeInMsWhenSyncEmpty: 0  
+
+# Increase the Hystrix timeout to 60s (for all)
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
