@@ -1,10 +1,1 @@
-zuul:
-  #Service will be mapped under the /api URI
-  prefix: /api
-  routes:
-    hello-server:
-      path: /server/**
-      url: HELLO-SERVER
-    hello-client:
-      path: /client/**
-      serviceId: HELLO-CLIENT
+hello: Sumit
